@@ -9,7 +9,8 @@ import java.util.Map.Entry;
 import dados.LeilaoDAO;
 
 public class Leilao {
-
+	
+	private String id; //leilao tem id do banco, ele é null no inicio e o bacoo devolve o nro dele
 	private String ownerUser; //cpf do usuario q eh o owner
 	private float minimunPrice;
 	private String winnerUser; //usuario vencedor(est� sempre sendo atualizado p o q d� o maior lance)
@@ -20,7 +21,7 @@ public class Leilao {
 	private Lances lance;
 	private HashMap<String, Double> Lances;
 	
-	public Leilao( String ownerUser,  float minimunPrice, String shortDescription, String longDescription, String categoryy ) throws SQLException{
+	public Leilao(String id,  String ownerUser,  float minimunPrice, String shortDescription, String longDescription, String categoryy ) throws SQLException{
 	//manda para o banco salvar o leilao criado
 		banco = new LeilaoDAO();
 		banco.inserirNovoLeilao(ownerUser, minimunPrice, shortDescription, longDescription, categoryy);
@@ -29,11 +30,13 @@ public class Leilao {
 		this.shortDescription = shortDescription;
 		this.longDescription =  longDescription;
 		this.categoryy = categoryy;
+		this.id = id;
 	}
 	
 	public void endLeilao() throws SQLException {
 		//seta o vencedor, da drop em todos dados da tabela para ter uma tabela nova pra os proximos e encerra a conex�o
-		actualWinner();
+		this.winnerUser = actualWinner();
+		//banco.LeiloesTerminados(ownerUser,winnerUser, minimunPrice,shortDescription,longDescription,categoryy);
 		banco.sair();
 	}
 	public void saveNewLance( User user, float value) throws SQLException {
@@ -65,7 +68,7 @@ public class Leilao {
 	public LeilaoDAO returnLeilao(){
 		return banco;
 	}
-	public void actualWinner() {
+	public String actualWinner() {
 		//diz quem � o vencedor no momento
 		Double maior = 0.0;
 		String winner = null;
@@ -75,6 +78,7 @@ public class Leilao {
 				winner = pair.getKey();
 			}
 		}
+		return winner;
 		
 	}
 }

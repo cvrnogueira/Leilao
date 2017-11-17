@@ -1,10 +1,8 @@
 package bdLeilao;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
-
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -26,6 +24,11 @@ public class Main extends Application  {
 	private TextField email;
 	private Leilao leilao;
 	private static TextArea textArea;
+	private TextField ownerUser;
+	private TextField minimunPrice;
+	private TextField shortDescription;
+	private TextField longDescription;
+	private TextField categoryy;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -85,6 +88,28 @@ public class Main extends Application  {
 		email.setStyle("-fx-background-color:#ecf0f1");
 		leftPane.add(cpf, 4, 7);
 		leftPane.add(email, 4, 8);
+		
+		//--Dados do leilao--//
+		ownerUser = new TextField("CPF Dono do leilao");
+		ownerUser.setPrefWidth(200);
+		ownerUser.setStyle("-fx-background-color:#ecf0f1");
+		minimunPrice = new TextField("Preço mínimo");
+		minimunPrice.setPrefWidth(200);
+		minimunPrice.setStyle("-fx-background-color:#ecf0f1");
+		shortDescription = new TextField("Pequena descrição");
+		shortDescription.setPrefWidth(200);
+		shortDescription.setStyle("-fx-background-color:#ecf0f1");
+		longDescription = new TextField("Longa descrição");
+		longDescription.setPrefWidth(200);
+		longDescription.setStyle("-fx-background-color:#ecf0f1");
+		categoryy = new TextField("Categoria");
+		categoryy.setPrefWidth(200);
+		categoryy.setStyle("-fx-background-color:#ecf0f1");
+		leftPane.add(ownerUser, 5, 7);
+		leftPane.add(minimunPrice, 5, 8);
+		leftPane.add(shortDescription, 5, 9);
+		leftPane.add(longDescription, 5, 10);
+		leftPane.add(categoryy, 5, 11);
 		
 		//-----Nome do usuário a ser buscado---/
 		consultaNome = new TextField("Nome");
@@ -154,7 +179,7 @@ public class Main extends Application  {
 	}
 	
 	private void setup() throws SQLException {
-		leilao = new Leilao("86820397021", 250, "descrica curta", "descricao longa", "informática");
+		//leilao = new Leilao("86820397021", 250, "descrica curta", "descricao longa", "informática");
 	}
 	
 	public void listarTodosLances() throws SQLException{
@@ -195,6 +220,12 @@ public class Main extends Application  {
 			textArea.setText("Usuário inserido!");
 	}
 	
+	public void insereNovoLeilao(String ownerUser,  float minimunPrice, String shortDescription, String longDescription, String categoryy ) throws SQLException{
+		leilao.returnLeilao().sair();
+		textArea.setText(" ");
+		leilao.returnLeilao().inserirNovoLeilao(ownerUser, minimunPrice, shortDescription, longDescription, categoryy);
+		textArea.setText("Leilão inserido!");
+	}
 	public void sair() throws SQLException{
 		leilao.returnLeilao().sair();
 		textArea.setText("Conexão fechada!");
